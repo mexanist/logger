@@ -26,5 +26,8 @@ logger_app: main.o lib/liblogger.so
 	@echo "Приложение собрано"
 
 clean:
-	rm -rf lib *.o
+	rm -rf lib *.o logger_app test.log
 	@echo "Очищено"
+
+run: all
+	./logger_app test.log INFO
