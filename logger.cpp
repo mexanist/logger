@@ -15,17 +15,16 @@ namespace LoggerLib{
 			default:                return "UNKNOWN";
 		}
 	}
-// Logger
 
 	std::string Logger::formatMessage(const LogMessage& msg) const{
+		std::tm tm_buf;
 		auto time = std::chrono::system_clock::to_time_t(msg.timestamp);
-		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(msg.timestamp.time_since_epoch()) % 1000;//??? переписать
-		
 		std::stringstream ss;
-		ss << std::put_time(std::localtime(&time), "%Y-%m-%d %H:%M:%S")
-		   << '.' << std::setfill('0') << std::setw(3) << ms.count()
-		   << " [" << levelToString(msg.level) << "] " << msg.text;
-
+/*!!! использована потокобезопасная С - функция localtime_r(), всвязи с этим,
+ * при компиляции флаг -pthread обязателен, по той причине что он подключает
+ * потокобезопасные С - функции */
+		ss << std::put_time(localtime_r(&time, &tm_buf), "%Y-%m-%d %H:%M:%S")
+		<< " [" << levelToString(msg.level) << "] " << msg.text;
 		return ss.str();
 	}
 //Конструктор со списком инициализации членов класса
