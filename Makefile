@@ -16,7 +16,7 @@ lib/liblogger.so: logger.o
 	@echo "Библиотека собрана: lib/liblogger.so"
 
 logger.o: logger.cpp
-	$(CC) $(CCFLAGS) -fPIC -c logger.cpp -o logger.o
+	$(CC) $(CCFLAGS) -fPIC $(LIBS) -c logger.cpp -o logger.o
 
 main.o: main.cpp
 	$(CC) $(CCFLAGS) -c main.cpp -o main.o
